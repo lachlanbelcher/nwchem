@@ -1,22 +1,8 @@
-C> \ingroup nwint
-C> @{
-C>
-C> \brief Compute the overlap integral derivatives
-C>
-C> Compute the overlap integral derivatives defined as
-C> \f{eqnarray*}{
-C>   \frac{\partial (\mu|\nu)}{\partial X_x} 
-C>     &=& \int \frac{\partial [g_\mu(X_\mu,r_1)g_\nu(X_\nu,r_1)]}{\partial X_x}dr_1
-C> \f}
-C> On output the overlap integral derivatives are stored as if the array
-C> is dimensioned as `Ova(nint,ncoord,natom)`, where `nint` is the number 
-C> of integrals, `ncoord` are the Cartesian coordinates x, y and z, and
-C> is 2 for the number of expansion centers on which the basis functions are
-C> positioned.
-C>
-      subroutine intd_1eov(i_basis,ish,j_basis,jsh,lscr,scr,
-     &       lOva,Ova,idatom,hlfdrv)
-c $Id$
+      subroutine intd_1eaov(i_basis,ish,j_basis,jsh,lscr,scr,
+     &       lOva,Ova,idatom)
+c
+c  anti symmetric overlap contribution
+c
       implicit none
 #include "stdio.fh"
 #include "errquit.fh"
@@ -24,51 +10,21 @@ c::functions
       integer int_nint_cart
       external int_nint_cart
 c::passed
-      integer i_basis   !< [Input] ish basis set handle
-      integer ish       !< [Input] "i" contraction index
-      integer j_basis   !< [Input] jsh basis set handle
-      integer jsh       !< [Input] "j" contraction index
-      integer lscr      !< [Input] length of scratch space "scr"
-      integer lOva      !< [Input] number of overlap integral derivatives in shells ish and jsh
+      integer i_basis   ! [input] ish basis set handle
+      integer ish       ! [input] "i" contraction index
+      integer j_basis   ! [input] jsh basis set handle
+      integer jsh       ! [input] "j" contraction index
+      integer lscr      ! [input] length of scratch space "scr"
+      integer lOva      ! [input] number of overlap integral derivatives in shells ish and jsh
 c                       ! NOTE: nint*3 integral derivatives returned per unique center
-      integer idatom(*) !< [Output] array identifying centers for derivatives
+      integer idatom(*) ! [output] array identifying centers for derivatives
 c                       ! e.g., the first nint*3  derivatives go to center idatom(1)
 c                       !       the second nint*3 derivatives go to center idatom(2)
-C LB
-      logical hlfdrv    ! [input] if true, calculate same atom as well
-                        ! as different atom integrals. This is necessary
-                        ! when calculating the half-derivative overlap
-                        ! matrix for NADCTs
-C LB
 c
 c Order is...   nint*3*2 (3=> xyz, 2=atoms)
 c
-c  /                   |   
-c | nint,d <ij>        |
-c |      --------------|
-c  \     d[idatom(1),x]|
-c                          |
-c       nint,d <ij>        |
-c            --------------|
-c            d[idatom(1),y]|
-c                              |
-c           nint,d <ij>        |
-c                --------------|
-c                d[idatom(1),z]|
-c                                  |
-c               nint,d <ij>        |
-c                    --------------|
-c                    d[idatom(2),x]|
-c                                      |
-c                   nint,d <ij>        |
-c                        --------------|
-c                        d[idatom(2),y]|
-c                                          \
-c                       nint,d <ij>         |
-c                            -------------- |
-c                            d[idatom(2),z]/
-      double precision scr(lscr) !< [Scratch] Work space
-      double precision Ova(lOva) !< [Output] The overlap integral derivatives
+      double precision scr(lscr)
+      double precision Ova(lOva)
 *
       integer nint
 *
@@ -79,12 +35,12 @@ c                            d[idatom(2),z]/
         call errquit('intd_1eov: nint>lOva error',911,
      &          INT_ERR)
       endif
-      call intd_1eovP(i_basis,ish,j_basis,jsh,lscr,scr,nint,
-     &    OVa,idatom,hlfdrv)
+      call intd_1eaovP(i_basis,ish,j_basis,jsh,lscr,scr,nint,
+     &    OVa,idatom)
       end
       
-      subroutine intd_1eovP(i_basis,ish,j_basis,jsh,lscr,scr,
-     &       nint,Ova,idatom,hlfdrv)
+      subroutine intd_1eaovP(i_basis,ish,j_basis,jsh,lscr,scr,
+     &       nint,Ova,idatom)
       implicit none
 c
 c returns 1e overlap derivative integrals for shells/contractions ish,jsh
@@ -108,10 +64,8 @@ c... errquit
 c::functions
       logical cando_hnd_1e
       logical cando_nw
-      logical cando_sim
       external cando_hnd_1e
       external cando_nw
-      external cando_sim
 c::passed
       integer i_basis   ! [input] ish basis set handle
       integer ish       ! [input] "i" contraction index
@@ -123,12 +77,6 @@ c                       ! NOTE: nint*3 integral derivatives returned per unique 
       integer idatom(*) ! [output] array identifying centers for derivatives
 c                       ! e.g., the first nint*3  derivatives go to center idatom(1)
 c                       !       the second nint*3 derivatives go to center idatom(2)
-C LB
-      logical hlfdrv    ! [input] if true, calculate same atom as well
-                        ! as different atom integrals. This is necessary
-                        ! when calculating the half-derivative overlap
-                        ! matrix for NADCTs
-C LB
 c
 c Order is...   nint*3*2 (3=> xyz, 2=atoms)
 c
@@ -165,7 +113,7 @@ c::local
       integer jbas,jatom,jnp,jgen,jexp,jcf,jtype,jgeom,jsbas,jcfS
       logical any_spherical
       logical orel, oirel, ojrel, oNR
-      logical ohnd_ok, onw_ok, osim_ok
+      logical ohnd_ok, onw_ok
       integer i_nbf_x, j_nbf_x
       integer i_nbf_s, j_nbf_s
       integer nint_x, nint_s
@@ -178,10 +126,13 @@ c
 c
 c  check if gencont, or spshell
 c
-      call int_nogencont_check(i_basis,'intd_1eovP:i_basis')
-      call int_nogencont_check(j_basis,'intd_1eovP:j_basis')
-      call int_nospshell_check(i_basis,'intd_1eovP:i_basis')
-      call int_nospshell_check(j_basis,'intd_1eovP:j_basis')
+cgk debug
+*     write(*,*)'gk: entered intd_1eov'
+cgk end
+      call int_nogencont_check(i_basis,'intd_1eaovP:i_basis')
+      call int_nogencont_check(j_basis,'intd_1eaovP:j_basis')
+      call int_nospshell_check(i_basis,'intd_1eaovP:i_basis')
+      call int_nospshell_check(j_basis,'intd_1eaovP:j_basis')
 c
       ibas = i_basis + BASIS_HANDLE_OFFSET
       jbas = j_basis + BASIS_HANDLE_OFFSET
@@ -192,7 +143,7 @@ c
 c
       iatom = (sf_ibs_cn2ce(ish,ibas))
       jatom = (sf_ibs_cn2ce(jsh,jbas))
-      if ((iatom.eq.jatom).and.(.not.hlfdrv))then
+      if (iatom.eq.jatom) then
         idatom(1) = 0
         idatom(2) = 0
         return
@@ -270,9 +221,9 @@ c
       orel = oirel.or.ojrel
 c
       if (igeom.ne.jgeom) then
-        write(luout,*)'intd_1eovP: two different geometries for',
+        write(luout,*)'intd_1eaovP: two different geometries for',
      &         ' derivatives?'
-        call errquit('intd_1eovP: geom error ',911, INT_ERR)
+        call errquit('intd_1eaovP: geom error ',911, INT_ERR)
       endif
 c
       ohnd_ok = cando_hnd_1e(i_basis,ish,0)
@@ -280,9 +231,11 @@ c
      &    .and. (.not.geom_any_finuc (igeom))
      &    .and. (.not.geom_any_finuc (jgeom))
       onw_ok = cando_nw(i_basis,ish,0) .and. cando_nw(j_basis,jsh,0)
-      osim_ok = cando_sim(i_basis,ish,0) .and. cando_sim(j_basis,jsh,0)
 c
       if (orel) then
+cgk debug
+*      write(*,*)'gk: calling rel_oneld'
+cgk end
         call rel_oneld (
      &      coords(1,iatom,igeom),
      &      dbl_mb(mb_exndcf(iexp,ibas)),
@@ -298,7 +251,10 @@ c........................       doS   doT    doV    canAB
      &      Ova,scr,scr,nint,.true.,.false.,.false.,.false.,onw_ok,
 c...........       nonrel dryrun
      &      ohnd_ok,oNR,.false.,scr,lscr,rel_dbg,rel_typ)
-      else if (onw_ok.or.osim_ok) then
+      else if (onw_ok) then
+cgk debug
+*      write(*,*)'gk: calling hf1d'
+cgk end
         call hf1d(
      &      coords(1,iatom,igeom),
      &      dbl_mb(mb_exndcf(iexp,ibas)),
@@ -317,6 +273,9 @@ c...........overlap, k-e,     pot-e,    canab,  dryrun
      &      .true.,  .false., .false., .false., .false.,
      &      scr,lscr)
       elseif (ohnd_ok) then
+cgk debug
+*      write(*,*)'gk: calling hnd_stvintd'
+cgk end
         call hnd_stvintd(
      &      coords(1,iatom,igeom),
      &      dbl_mb(mb_exndcf(iexp,ibas)),
@@ -375,7 +334,7 @@ c
             call spcart_tran1e(Ova(1,Zyx,Zatom),scr,
      &          j_nbf_x,i_nbf_x,0,jgen,
      &          j_nbf_s,i_nbf_s,Itype,igen,
-     &          .true.)
+     &          .false.)
           enddo
         enddo
       else if (bas_spherical(jbas)) then
@@ -400,6 +359,9 @@ c
 c
 c now shuffle transformed buffers to contiguous space
 c
+cgk debug
+*     write(*,*)'gk: about to leave intd_1eov after shuffle'
+cgk end
       nint_x = i_nbf_x*j_nbf_x
       nint_s = i_nbf_s*j_nbf_s
       if (nint_s.gt.nint_x) then
@@ -414,4 +376,3 @@ c
       endif
 c
       end
-C> @}
