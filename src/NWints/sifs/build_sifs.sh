@@ -24,7 +24,6 @@ curl > "$TGZ" https://gitlab.com/api/v4/projects/36816383/repository/archive?pat
 && curl > ulab16.F https://gitlab.com/columbus-program-system/columbus/-/raw/master/Columbus/source/gcfci/colib/pack/ulab16.F?inline=false\
 && curl > ulab32.F https://gitlab.com/columbus-program-system/columbus/-/raw/master/Columbus/source/gcfci/colib/pack/ulab32.F?inline=false\
 && curl > izero.F https://gitlab.com/columbus-program-system/columbus/-/raw/master/Columbus/source/gcfci/colib/linear_algebra/izero.F?inline=false\
-
 	    && break ;\
 					 tries=$((tries+1)) ; echo attempt no.  $tries    ; sleep 2 ;  done
 fi
