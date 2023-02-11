@@ -235,8 +235,8 @@ c
                map(i,1)=iat
                map(i,2)=shmap(otype)
 cgk debug
-       write(*,'(a,i,i,i)')'gk: ', i, iat, shmap(otype)
-       write(*,'(a,i,i,i)')'gk: ', i, map(i,1), map(i,2)
+*       write(*,'(a,i,i,i)')'gk: ', i, iat, shmap(otype)
+*       write(*,'(a,i,i,i)')'gk: ', i, map(i,1), map(i,2)
 cgk end
 *              int_mb(k_map+i-1) = iat
 *              int_mb(k_map+nbft+i-1) = shmap(otype)
