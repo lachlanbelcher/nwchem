@@ -380,7 +380,7 @@ c   (1) the derivative wrt to each of the nuclear attraction centers,
 c   (2) the derivative wrt to the centers of the Gaussian functions.
          
          if( ictrA.eq.ictrB )then
-           call yaxpy(Nint*3,1.D0,W0(i_VA),1,bNAI(1,((ictrA-1)*3+1)),1)         
+           call yaxpy(Nint*3,1.D0,W0(i_VA),1,bNAI(1,((ictrA-1)*3+1)),1)
          else
            call yaxpy(Nint*3,1.D0,W0(i_VA),1,bNAI(1,((ictrA-1)*3+1)),1)
            call yaxpy(Nint*3,1.D0,W0(i_VB),1,bNAI(1,((ictrB-1)*3+1)),1)

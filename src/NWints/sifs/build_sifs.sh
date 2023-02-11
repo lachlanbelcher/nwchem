@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 TGZ=columbus-master.tar.gz
 [ -f "$TGZ" ] && gunzip -t "$TGZ" > /dev/null && USE_TGZ=1
+USE_TGZ=0
 if [[ "$USE_TGZ" == 1 ]]; then
     echo "using existing"  "$TGZ"
 else
