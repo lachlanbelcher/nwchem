@@ -316,7 +316,7 @@ C LB
         else if(inp_compare(.false., 'sodtrc', operation)) then
            call int_terminate
            call intd_init(rtdb, i3, bases)
-           sodft_aoints = nadct_trace(rtdb,.false.,.false.)
+           sodft_aoints = nadct_trace(rtdb,.false.)
 #ifdef GA_TRACE
       call trace_end(ga_nodeid())                            ! end trace
 #endif
