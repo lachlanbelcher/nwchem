@@ -1,7 +1,7 @@
 #
 # $Id$
 #
-#USE_I4FLAGS=1
+USE_I4FLAGS=1
 include ../../config/makefile.h
 
 ifdef NO_SIFS
@@ -21,7 +21,7 @@ endif
       LIBRARY = libnwints.a
 
 
- #     LIB_INCLUDES = -I../../nwdft/grid -I../../nwdft/include \
+     LIB_INCLUDES = -I../../nwdft/grid -I../../nwdft/include \
 	 -I../../ddscf
 
       LIB_DEFINES = 
