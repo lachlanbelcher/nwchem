@@ -115,7 +115,7 @@ c
       if (i_cent.eq.j_cent) then
 *        write(luout,*)' automatic zero '
         call ifill(2,0,idatom,1)
-        call ycopy((mynint*3*2),0.0d00,0,Ova,1)
+        call dcopy((mynint*3*2),0.0d00,0,Ova,1)
         return
       endif
       idatom(1) = i_cent
