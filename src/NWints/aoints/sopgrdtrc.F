@@ -208,7 +208,7 @@ C LB
                 hlfdrv=.false.
 C LB
                 call intd_1eov(basis,ish1,basis,ish2,lscr,scr,
-     &               lbuf,H,idatom,hlfdrv)
+     &               lbuf,H,idatom)
 
 C     Dsow x S
 

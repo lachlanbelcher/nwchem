@@ -73,7 +73,7 @@ C LB
 
 
 c LB
-!      WRITE(LUOUT,*)"LB Debug, now in hdoverlap"
+      WRITE(LUOUT,*)"LB Debug, now in hdoverlap"
 !      WRITE(LUOUT,*)"LB Debug, iab1f=",iab1f,"iab2f=",iab2f
 !      WRITE(LUOUT,*)"nmot=",nmot
       nbf=nmot ! convert to INTEGER*8
@@ -172,10 +172,10 @@ C LB
 !                WRITE(LUOUT,*)"LB hd, iat1=",iat1,"iat2=",iat2
 !                WRITE(LUOUT,*)"LB hd, ish1=",ish1,"ish2=",ish2
 C LB
-                call intd_1eov(basis,ish1,basis,ish2,l_scr,scr,
+                call intd_1eovQ(basis,ish1,basis,ish2,l_scr,scr,
      &               l_buf,H,idatom,hlfdrv)
 C LB
-!                WRITE(LUOUT,*)"LB Debug, back from intd_1eov"
+                WRITE(LUOUT,*)"LB Debug, back from intd_1eovQ"
 
                 status=bas_continfo(basis,ish1,itype,dum1,dum2,dum3)
                 status=bas_continfo(basis,ish2,jtype,dum1,dum2,dum3)
@@ -246,10 +246,10 @@ C       be available in C1 symmetry.
                   ENDIF
                 ENDDO
 
-!                DO i=1,6
-!        WRITE(LUOUT,*)"SQHDOL",i
-!                  CALL output(SQHDOL(i,:,:),1,nmot,1,nmot,nmot,nmot,1)
-!                ENDDO
+                DO i=1,6
+        WRITE(LUOUT,*)"SQHDOL",i
+                  CALL output(SQHDOL(i,:,:),1,nmot,1,nmot,nmot,nmot,1)
+                ENDDO
 
 
  60           continue

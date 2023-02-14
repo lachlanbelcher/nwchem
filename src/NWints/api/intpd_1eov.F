@@ -56,8 +56,6 @@ c::passed
       integer idatom(*)         !< [Output] array identifying centers for derivatives
 c                       ! e.g., the first nint*3  derivatives go to center idatom(1)
 c                       !       the second nint*3 derivatives go to center idatom(2)
-      logical,parameter :: hlfdrv = .false. ! not calculating half-deriv
-                                            ! overlap matrix
 c::local
       logical shells_ok
       integer i_geom, j_geom, ibas, jbas, ucont, mynint
@@ -143,7 +141,7 @@ c
 c.............................. doS    doT     doV     canonical
      &      Ova,scr,scr,mynint,.true.,.false.,.false.,.false.,
 c........... dryrun
-     &      .false.,scr,lscr,hlfdrv)
+     &      .false.,scr,lscr)
         if (bas_spherical(ibas).or.bas_spherical(jbas)) then
           if (Li.eq.-1) i_gen = 1
           if (Lj.eq.-1) j_gen = 1

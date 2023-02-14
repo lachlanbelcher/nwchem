@@ -102,7 +102,7 @@ C LB
                 hlfdrv=.false.
 C LB
                 call intd_1eov(basis,ish1,basis,ish2,lscr,Iscr,
-     &               lbuf,Ibuf,idatom,hlfdrv)
+     &               lbuf,Ibuf,idatom)
 
                 if ( idatom(1) .ge. 1 ) then
 c               write(6,*) 'integral buffer for ',idatom(1),

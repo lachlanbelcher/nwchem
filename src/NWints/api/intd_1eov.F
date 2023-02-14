@@ -1,3 +1,40 @@
+C> Old intd_1eov is now intd_1eovQ (below).  This intd_1eov is a wrapper
+C> for backward compatibility.  intd_1eovQ has a new input argument,
+C> hlfdrv, required for computing the half-derivative overlap matrix used
+C> by COLUMBUS to compute non-adiabatic derivative couplings.  Routines
+C> which need to calculate the HDOM should call intd_1eovQ directly,
+C> specifying hlfdrv=.true.
+C>
+C> Lachlan Belcher 14 Feb 2023
+
+      subroutine intd_1eov(i_basis,ish,j_basis,jsh,lscr,scr,
+     &       lOva,Ova,idatom)
+c $Id$
+      implicit none
+      integer i_basis   !< [Input] ish basis set handle
+      integer ish       !< [Input] "i" contraction index
+      integer j_basis   !< [Input] jsh basis set handle
+      integer jsh       !< [Input] "j" contraction index
+      integer lscr      !< [Input] length of scratch space "scr"
+      integer lOva      !< [Input] number of overlap integral derivatives in shells ish and jsh
+      double precision scr(lscr) !< [Scratch] Work space
+      double precision Ova(lOva) !< [Output] The overlap integral derivatives
+c                       ! NOTE: nint*3 integral derivatives returned per unique center
+      integer idatom(*) !< [Output] array identifying centers for derivatives
+c                       ! e.g., the first nint*3  derivatives go to center idatom(1)
+c                       !       the second nint*3 derivatives go to center idatom(2)
+      logical hlfdrv    ! [input] if true, calculate same atom as well
+                        ! as different atom integrals. This is necessary
+                        ! when calculating the half-derivative overlap
+                        ! matrix for NADCTs
+c
+      hlfdrv=.false.
+      CALL intd_1eovQ(i_basis,ish,j_basis,jsh,lscr,scr,
+     &       lOva,Ova,idatom,hlfdrv)
+
+      end
+C--------------------------------------------------------------------------------------------
+
 C> \ingroup nwint
 C> @{
 C>
@@ -14,7 +51,7 @@ C> of integrals, `ncoord` are the Cartesian coordinates x, y and z, and
 C> is 2 for the number of expansion centers on which the basis functions are
 C> positioned.
 C>
-      subroutine intd_1eov(i_basis,ish,j_basis,jsh,lscr,scr,
+      subroutine intd_1eovQ(i_basis,ish,j_basis,jsh,lscr,scr,
      &       lOva,Ova,idatom,hlfdrv)
 c $Id$
       implicit none
@@ -315,7 +352,7 @@ c
      &      Ova,scr,scr,nint,
 c...........overlap, k-e,     pot-e,    canab,  dryrun
      &      .true.,  .false., .false., .false., .false.,
-     &      scr,lscr)
+     &      scr,lscr,hlfdrv)
       elseif (ohnd_ok) then
         call hnd_stvintd(
      &      coords(1,iatom,igeom),

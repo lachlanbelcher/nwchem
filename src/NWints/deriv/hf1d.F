@@ -1,4 +1,63 @@
-      Subroutine hf1d(
+C> Old hf1d is now hf1dQ (below).  This hf1d is a wrapper
+C> for backward compatibility.  hf1dQ has a new input argument,
+C> hlfdrv, required for computing the half-derivative overlap matrix used
+C> by COLUMBUS to compute non-adiabatic derivative couplings.  Routines
+C> which need to calculate the HDOM should call hf1dQ directly,
+C> specifying hlfdrv=.true.
+C>
+C> Lachlan Belcher 14 Feb 2023
+
+
+      SUBROUTINE hf1d(
+     &       Axyz,Aprims,Acoefs,NPA,NCA,La,ictrA,
+     &       Bxyz,Bprims,Bcoefs,NPB,NCB,Lb,ictrB,
+     &       Cxyz,zan,exinv,ncenters,
+     &       bO2I,bKEI,bNAI,Nint,
+     &       O2I,KEI,NAI,canAB,dryrun,W0,maxW0)
+c $Id$
+
+      Implicit real*8 (a-h,o-z)
+      Implicit integer (i-n)
+      logical hlfdrv    ! [input] if true, calculate same atom as well
+                        ! as different atom integrals. This is necessary
+                        ! when calculating the half-derivative overlap
+                        ! matrix for NADCTs
+      integer ictrA, ictrB !NB already used implicitly
+
+      Logical dryrun
+      Logical O2I,KEI,NAI,canAB,GenCon
+
+c--> Cartesian Coordinates, Primitives & Contraction Coefficients
+
+      Dimension Axyz(3),Aprims(NPA),Acoefs(NPA,NCA)
+      Dimension Bxyz(3),Bprims(NPB),Bcoefs(NPB,NCB)
+
+c--> Nuclear Cartesian Coordinates, Charges & Inverse Exponents
+
+      Dimension Cxyz(3,ncenters),zan(ncenters),exinv(ncenters)
+
+c--> Blocks of Overlap, Kinetic Energy & Nuclear Attraction Integrals
+
+      Dimension bO2I(Nint,*),bKEI(Nint,*),bNAI(Nint,*)
+
+
+      hfldrv=.false.
+      CALL hf1dQ(
+     &       Axyz,Aprims,Acoefs,NPA,NCA,La,ictrA,
+     &       Bxyz,Bprims,Bcoefs,NPB,NCB,Lb,ictrB,
+     &       Cxyz,zan,exinv,ncenters,
+     &       bO2I,bKEI,bNAI,Nint,
+     &       O2I,KEI,NAI,canAB,dryrun,W0,maxW0,
+     &       hlfdrv)
+
+
+
+      end
+
+
+
+C-------------------------------------------------------------------------
+      Subroutine hf1dQ(
      &       Axyz,Aprims,Acoefs,NPA,NCA,La,ictrA,
      &       Bxyz,Bprims,Bcoefs,NPB,NCB,Lb,ictrB,
      &       Cxyz,zan,exinv,ncenters,
@@ -11,7 +70,6 @@ c $Id$
       Implicit integer (i-n)
 
 #include "errquit.fh"
-C LB
 #include "stdio.fh"
       LOGICAL smatm     ! if true, both integrals use the same atom
                         ! center.  Necessary for knowing when to
@@ -22,7 +80,6 @@ C LB
                         ! when calculating the half-derivative overlap
                         ! matrix for NADCTs
       integer ictrA, ictrB !NB already used implicitly
-C LB
 
       Logical dryrun
       Logical O2I,KEI,NAI,canAB,GenCon
