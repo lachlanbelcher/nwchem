@@ -41,7 +41,7 @@ c--> Blocks of Overlap, Kinetic Energy & Nuclear Attraction Integrals
       Dimension bO2I(Nint,*),bKEI(Nint,*),bNAI(Nint,*)
 
 
-      hfldrv=.false.
+      hlfdrv=.false.
       CALL hf1dQ(
      &       Axyz,Aprims,Acoefs,NPA,NCA,La,ictrA,
      &       Bxyz,Bprims,Bcoefs,NPB,NCB,Lb,ictrB,
