@@ -240,9 +240,6 @@ C LB/cgk
          else if (inp_compare(.false.,test,
      >                        'nadtrc')) then
             operation='nadtrc'
-         else if (inp_compare(.false.,test,
-     >                        'sodtrc')) then
-            operation='sodtrc'
 C LB/cgk
          else if (inp_compare(.false.,test,
      >                        'lcao')) then

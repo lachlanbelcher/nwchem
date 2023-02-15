@@ -394,8 +394,6 @@ C LB/cgk
          status = task_nadtrc(rtdb)
       else if (inp_compare(.false., 'nadtrc', operation)) then
          status = task_nadtrc(rtdb)
-      else if (inp_compare(.false., 'sodtrc', operation)) then
-         status = task_nadtrc(rtdb)
 C LB/cgk
       else if (inp_compare(.false., 'property', operation)) then
          status = task_property(rtdb)

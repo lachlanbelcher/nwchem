@@ -313,13 +313,6 @@ C LB
 #ifdef GA_TRACE
       call trace_end(ga_nodeid())                            ! end trace
 #endif
-        else if(inp_compare(.false., 'sodtrc', operation)) then
-           call int_terminate
-           call intd_init(rtdb, i3, bases)
-           sodft_aoints = nadct_trace(rtdb,.false.,.false.)
-#ifdef GA_TRACE
-      call trace_end(ga_nodeid())                            ! end trace
-#endif
         else
           call errquit('sodft_aoints: task not defined',0, 
      &     INPUT_ERR)
