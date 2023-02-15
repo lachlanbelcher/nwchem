@@ -525,7 +525,7 @@ cgk debug
 cgk end
 
       call int_2e_sifs(geom, AO_bas_han, tol2e, oskel, aoint2, ninfo, 
-     #     info, ifmt, ibvtyp, ibitv, int_mb(k_lab))
+     &     info, ifmt, ibvtyp, ibitv, int_mb(k_lab))
 
 c
 c     done with memory for sifs files
