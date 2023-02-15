@@ -53,9 +53,6 @@ C-------------------------local variables--------------------------
       character*16 name
       integer nxtask, task_size
       external nxtask
-C LB
-      LOGICAL hlfdrv !true = calculate half-derivative overlap integrals
-C LB
 
       task_size = 1
       status = rtdb_parallel(.true.) ! Broadcast reads to all processes
@@ -117,9 +114,6 @@ C               shell block in atomic (D/Dw)-matrix block
                 nint = ( il1 - if1 + 1 ) * ( il2 - if2 + 1 )
 
 C               overlap derivatives
-C LB
-                hlfdrv=.false.
-C LB
                 call intd_1eov(basis,ish1,basis,ish2,lscr,scr,
      &               lbuf,H,idatom)
 

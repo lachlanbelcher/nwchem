@@ -69,11 +69,6 @@ C-------------------------local variables--------------------------
 c
       integer nxtask, task_size
       external nxtask
-C LB
-c      hlfdrv= true => calculate half-derivative overlap ints for nadtrc
-c      hlfdrv= fals => half-deriv overlap ints not needed for gradients
-      LOGICAL hlfdrv !true = calculate half-derivative overlap integrals
-C LB
 
 cc AJL/Begin/SPIN ECPs
       integer ecp_channels
@@ -177,9 +172,6 @@ C               shell block in atomic (D/Dw)-matrix block
                 nint = ( il1 - if1 + 1 ) * ( il2 - if2 + 1 )
 
 C               overlap derivatives
-C LB
-                hlfdrv=.false.
-C LB
                 call intd_1eov(basis,ish1,basis,ish2,lscr,scr,
      &               lbuf,H,idatom)
 

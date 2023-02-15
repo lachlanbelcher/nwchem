@@ -66,9 +66,6 @@ cgk debug
       character*2 deriv(3)
       data deriv/'dx','dy','dz'/
 cgk end
-C LB
-      LOGICAL hlfdrv !true = calculate half-derivative overlap integrals
-C LB
 
       task_size = 1
       status = rtdb_parallel(.true.) ! Broadcast reads to all processes
@@ -204,9 +201,6 @@ C               shell block in atomic (D/Dw)-matrix block
 
 
 C               overlap derivatives
-C LB
-                hlfdrv=.false.
-C LB
                 call intd_1eov(basis,ish1,basis,ish2,lscr,scr,
      &               lbuf,H,idatom)
 
