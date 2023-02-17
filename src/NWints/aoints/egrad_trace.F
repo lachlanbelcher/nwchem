@@ -15,10 +15,8 @@
 * #include "cscfps.fh"
 * #include "sym.fh"
 * #include "cdft.fh"
-C LB
 #include "stdio.fh"
 #include "cdft.fh"
-C LB     
     
       
       integer ibas
@@ -73,19 +71,17 @@ c
       integer*4 numd1s, nbfs
       integer*4 aodens2
       logical status
-C LB
       INTEGER :: g_ad1, g_hd, l_asym, k_asym, l_hd, k_hd, nadx
       DOUBLE PRECISION, ALLOCATABLE :: SQHDOL(:,:,:)
       DOUBLE PRECISION :: nadxfl(nat,3)
       INTEGER*4 :: aodensa, infoa(ninfo)
       LOGICAL :: trans
-C LB
 
       me = ga_nodeid()
       nproc = ga_nnodes()
 c
 cgk debug
-      write(*,*)'gk: entered egrad_trace'
+*      write(*,*)'gk: entered egrad_trace'
 *      write(*,*)'gk: nbft = ', nbft
 *      write(*,*)'gk: nadct = ',nadct
 cgk end
@@ -379,7 +375,7 @@ C LB  calculate half-derivative overlap matrices
         nadxfl=0D0
         DO i = 0, nat-1
           DO j = 0, 2
-            WRITE(LUOUT,*)"LB egrad_trace, SQHDOL",i*3+j+1
+!            WRITE(LUOUT,*)"LB egrad_trace, SQHDOL",i*3+j+1
             CALL ga_put(g_hd,1,nbft,1,nbft,SQHDOL(i*3+j+1,:,:),nbft)
             CALL ga_print(g_hd)
             nadxfl(i+1,j+1)=-2*ga_ddot(g_hd,g_ad1)
@@ -433,7 +429,7 @@ cgkd end
      &    int_mb(k_sym), int_mb(k_map), nsym, nmpsy, kntin, itypea, 
      &    itypeb, nbfs) 
 cgk debug
-*       write(*,*)'gk: x spin orbit dinsity matrix matrix:'
+*       write(*,*)'gk: x spin orbit density matrix matrix:'
 *       ij=0
 *       do i=1,nbft
 *         do j=1,i
@@ -444,7 +440,7 @@ cgk debug
 cgk end
 c       put x so effective density in global arrays
         call asif2ga(g_sod(1),dbl_mb(k_sm),ibas,nbft)
-        write(*,*)'gk: x so effective density global array'
+        write(*,*)'x so effective density global array'
         call ga_print(g_sod(1))
 
         itypea=2
@@ -457,7 +453,7 @@ cgkd end
      &    int_mb(k_sym), int_mb(k_map), nsym, nmpsy, kntin, itypea, 
      &    itypeb, nbfs) 
 cgk debug
-*       write(*,*)'gk: y spin orbit dinsity matrix matrix:'
+*       write(*,*)'y spin orbit density matrix matrix:'
 *       ij=0
 *       do i=1,nbft
 *         do j=1,i
@@ -468,7 +464,7 @@ cgk debug
 cgk end
 c       put y so effective density in global arrays
         call asif2ga(g_sod(2),dbl_mb(k_sm),ibas,nbft)
-        write(*,*)'gk: y so effective density global array'
+        write(*,*)'y so effective density global array'
         call ga_print(g_sod(2))
 
         itypea=2
@@ -492,7 +488,7 @@ cgk debug
 cgk end
 c       put z so effective density in global arrays
         call asif2ga(g_sod(3),dbl_mb(k_sm),ibas,nbft)
-        write(*,*)'gk: z so effective density global array'
+        write(*,*)'z so effective density global array'
         call ga_print(g_sod(3))
  
 c       get spin orbit effective fock matrix
@@ -518,8 +514,8 @@ c       put effective density in global arrays
         call sif2ga(g_eff,dbl_mb(k_sm),ibas,nbft)
 
 cgk debug
-        write(*,*)'gk: spin orbit effective fock matrix global array'
-        call ga_print(g_eff)
+*        write(*,*)'spin orbit effective fock matrix global array'
+*        call ga_print(g_eff)
 cgk end
       end if
 

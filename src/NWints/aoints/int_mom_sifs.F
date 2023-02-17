@@ -84,7 +84,7 @@ cgk end
       
 c
 cgk debug
-      write(*,*)'gk: **** entered int_mom_sifs'
+*      write(*,*)'gk: **** entered int_mom_sifs'
 cgk end
       basok=.false.
       odbug=.true.
@@ -292,8 +292,8 @@ cgk debug
               if(ibuf.eq.n1max) then
                 numtot = numtot + ibuf
 C LB
-         WRITE(*,*)"LB: in int_mom_sifs"
-         WRITE(*,*)"LB: calling sifew1 1 last=",last,"ibvtyp=",ibvtyp
+*         WRITE(*,*)"LB: in int_mom_sifs"
+*         WRITE(*,*)"LB: calling sifew1 1 last=",last,"ibvtyp=",ibvtyp
 C LB
                 call sifew1(aoints, info, 2, ibuf, msame, 
      &            itypea, itypeb, ifmt1, ibvtyp, 

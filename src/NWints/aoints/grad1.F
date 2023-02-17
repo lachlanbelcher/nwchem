@@ -69,8 +69,8 @@ c
       dobq = geom_extbq_on()
       call hf_print_set(1)
 cgk debug
-      write(*,*)'gk: in grad1, dobq = ', dobq
-      write(*,*)'gk: in grad1, pointforce = ', pointforce
+*      write(*,*)'gk: in grad1, dobq = ', dobq
+*      write(*,*)'gk: in grad1, pointforce = ', pointforce
 cgk end
 
       ijatom = -1
@@ -211,7 +211,7 @@ c     continue with forces if there are external charges (MV)
 c     --------------------------------------------------
       if(.not.dobq) return
 cgk debug
-      write(*,*)'gk:  continuing with forces for external charges'
+*      write(*,*)'gk:  continuing with forces for external charges'
 cgk end
 
       bq_ncent = geom_extbq_ncenter()
@@ -255,7 +255,7 @@ c
       next = nxtask(-nproc,task_size)
 
 cgk debug
-      write(*,*)'gk: leaving grad1'
+*      write(*,*)'gk: leaving grad1'
 cgk end
 
       return

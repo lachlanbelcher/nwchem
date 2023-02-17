@@ -34,9 +34,7 @@ c
 #include "rel_consts.fh"
 c
 #include "case.fh"
-C LB
 #include "geomP.fh"
-C LB
 c
       integer  ga_create_atom_blocked
       external ga_create_atom_blocked
@@ -80,9 +78,7 @@ c     sifs
 cgk debug
       integer mem1, max1e, mem2, max2e
 cgk end
-C LB
       ierr=0 !initialize
-C LB
        
 
       wrt_dft_aoints = .false.
@@ -401,19 +397,19 @@ c
 C LB
 c      write(*,*)'LB: before sifcfg(1), ierr=',ierr
 c      WRITE(*,*)'n1max=',n1max,'n2max=',n2max,'ifmt1=',ifmt1,'ifmt',ifmt
-      WRITE(*,*)"LB, sizeof l1rec=",sizeof(l1rec)
-      WRITE(*,*)"LB, sizeof lrecal=",sizeof(lrecal)
+c      WRITE(*,*)"LB, sizeof l1rec=",sizeof(l1rec)
+c      WRITE(*,*)"LB, sizeof lrecal=",sizeof(lrecal)
 C LB
       call sifcfg(1, lrecal, nbf_ao, ibvtyp, ifmt1, l1rec, n1max, ierr)
       lrecal = 4096
 C LB
-      write(*,*)'LB: after sifcfg(1), ierr=',ierr
-      WRITE(*,*)'l1rec=',l1rec
+c      write(*,*)'LB: after sifcfg(1), ierr=',ierr
+c      WRITE(*,*)'l1rec=',l1rec
 C LB
       call sifcfg(2, lrecal, nbf, ibvtyp, ifmt, l2rec, n2max, ierr)
 C LB
-      write(*,*)'LB: after sifcfg(2), ierr=',ierr
-      WRITE(*,*)'l2rec=',l2rec
+c      write(*,*)'LB: after sifcfg(2), ierr=',ierr
+c      WRITE(*,*)'l2rec=',l2rec
 C LB
 
       info(1) = 1 ! =FSPLIT; do not split aoints file
@@ -491,7 +487,7 @@ cgk end
 cgk debug
 *     write(*,*)'gk: calling int_1e_sifs'
 *     write(*,*)'gk:    mxengy=', mxengy
-      write(*,*)'gk:    info=', info
+*      write(*,*)'gk:    info=', info
 cgk write
 
       call int_1e_sifs(AO_bas_han, aoints, energy, mxengy, 

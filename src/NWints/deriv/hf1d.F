@@ -136,10 +136,8 @@ c******************************************************************************
       call hf_print_set(0)
 #endif
       MXD = 1
-C LB
       smatm=.FALSE.
       IF(ictrA.EQ.ictrB ) smatm = .TRUE.
-C LB
 
 c Determine whether general or segmented contraction is used.
 
@@ -262,13 +260,13 @@ c Compute the 2-center overlap integrals, <a|S|b>.
      &             canAB)
 
        do 200 n = 1,Nint
-C LB
+!        WRITE(*,*)"LB in hf1d, smatm=",smatm,"hlfdrv=",hlfdrv
+!        WRITE(*,*)"ictrA=",ictrA,"ictrB=",ictrB
         IF ((.NOT. smatm) .AND. (hlfdrv)) THEN
           bO2I(n,1)=-5D-01*bO2I(n,1)
           bO2I(n,2)=-5D-01*bO2I(n,2)
           bO2I(n,3)=-5D-01*bO2I(n,3)
         ENDIF
-C LB
         bO2I(n,4) = -bO2I(n,1)
         bO2I(n,5) = -bO2I(n,2)
         bO2I(n,6) = -bO2I(n,3)

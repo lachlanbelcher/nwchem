@@ -71,12 +71,10 @@ c                       ! NOTE: nint*3 integral derivatives returned per unique 
       integer idatom(*) !< [Output] array identifying centers for derivatives
 c                       ! e.g., the first nint*3  derivatives go to center idatom(1)
 c                       !       the second nint*3 derivatives go to center idatom(2)
-C LB
       logical hlfdrv    ! [input] if true, calculate same atom as well
                         ! as different atom integrals. This is necessary
                         ! when calculating the half-derivative overlap
                         ! matrix for NADCTs
-C LB
 c
 c Order is...   nint*3*2 (3=> xyz, 2=atoms)
 c
@@ -160,12 +158,10 @@ c                       ! NOTE: nint*3 integral derivatives returned per unique 
       integer idatom(*) ! [output] array identifying centers for derivatives
 c                       ! e.g., the first nint*3  derivatives go to center idatom(1)
 c                       !       the second nint*3 derivatives go to center idatom(2)
-C LB
       logical hlfdrv    ! [input] if true, calculate same atom as well
                         ! as different atom integrals. This is necessary
                         ! when calculating the half-derivative overlap
                         ! matrix for NADCTs
-C LB
 c
 c Order is...   nint*3*2 (3=> xyz, 2=atoms)
 c
@@ -336,7 +332,7 @@ c........................       doS   doT    doV    canAB
 c...........       nonrel dryrun
      &      ohnd_ok,oNR,.false.,scr,lscr,rel_dbg,rel_typ)
       else if (onw_ok.or.osim_ok) then
-        call hf1d(
+        call hf1dQ(
      &      coords(1,iatom,igeom),
      &      dbl_mb(mb_exndcf(iexp,ibas)),
      &      dbl_mb(mb_exndcf(icf,ibas)),

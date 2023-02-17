@@ -162,7 +162,7 @@ cgk end
 *     if (.not. (oreadfile .or. owritefile))
 *    $     owritefile = int2e_test_mem(geom, basis, tol2e*0.01d0)
 cgk debug
-      write(*,*)'gk: after int2e_test_mem  owritefile = ', owritefile
+*      write(*,*)'gk: after int2e_test_mem  owritefile = ', owritefile
 cgk end
 c
 *     if (oreadfile) then

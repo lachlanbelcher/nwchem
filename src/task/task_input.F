@@ -231,7 +231,6 @@ c            oembed = .true.
      >                        'rdf')) then
             operation='rdf'
          else if (inp_compare(.false.,test,
-C LB/cgk
      >                        'aoints')) then
             operation='aoints'
          else if (inp_compare(.false.,test,
@@ -240,7 +239,6 @@ C LB/cgk
          else if (inp_compare(.false.,test,
      >                        'nadtrc')) then
             operation='nadtrc'
-C LB/cgk
          else if (inp_compare(.false.,test,
      >                        'lcao')) then
             operation='lcao'

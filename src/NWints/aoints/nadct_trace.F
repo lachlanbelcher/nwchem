@@ -54,15 +54,13 @@ c
       integer*4 infocd(ninfmx)
       character*80 siftits(ntitmx)
       integer*4 nsym, nmot, nmbpsy(nsymx), nsift
-C LB
       integer*4 infocda(ninfmx)
       character*80 siftitsa(ntitmx)
       integer*4 nsifta
       LOGICAL :: trans ! is this a transition property run?
-C LB
 
 cgk debug
-      write(*,*)'gk: in nadct_trace'
+*      write(*,*)'gk: in nadct_trace'
 cgk end
       nadct_trace=.true.
 c  
@@ -394,7 +392,6 @@ cgk end
      & aodens, nsym=', nsym, BASIS_ERR)
       endif 
 
-C LB
 c     open aodensa
 c
       IF (trans) THEN
@@ -418,7 +415,6 @@ c
      & aodens, nsym=', nsym, BASIS_ERR)
         endif 
       ENDIF
-C LB
 c     set up force arrays
       if (.not. geom_ncent(geom,nat))
      $     call errquit('nadct_trace: could not get natoms',0, GEOM_ERR)
@@ -490,13 +486,11 @@ cgk debug
 *     write(*,*)'gk: back from egrad_trace'
 cgk end
       close(unit=aodens)
-C LB
       IF(trans) CLOSE(UNIT=aodensa)
-C LB
 
  1000 continue
 cgk debug
-      write(*,*)'gk: leaving nadct_traces'
+*      write(*,*)'gk: leaving nadct_traces'
 cgk end
       return
       end

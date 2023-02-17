@@ -91,8 +91,8 @@ cgk end
       
 c
 cgk debug
-      write(*,*)'gk: **** entered int_1e_sifs'
-      WRITE(*,*)'LB: info=',info
+!      write(*,*)'gk: **** entered int_1e_sifs'
+!      WRITE(*,*)'LB: info=',info
 cgk end
       basok=.false.
       odbug=.true.
@@ -129,7 +129,7 @@ c     k_* are the offsets corrsponding to the l_* handles
 c     
       call int_mem_1e(max1e, mem1)
 cgk debug
-      write(*,*)'gk: in int_mem_1e, max1e=', max1e, ' mem1=',mem1
+!      write(*,*)'gk: in int_mem_1e, max1e=', max1e, ' mem1=',mem1
 cgk end
 c     get memory for integral buffer
       if (.not. MA_push_get(MT_DBL,max1e,'int_1e_sifs:buf',l_buf,k_buf))
@@ -188,10 +188,10 @@ c     gk: consider this a temporary hack.  8 characters is not enough.
          enddo
       enddo
 cgk debug
-      write(*,*)'gk: bfnlab:'
-      do i=0,nbft-1
-         write(6,'(i4,2x,8a1)') i+1, (byte_mb(k_bfnlab+i*8+j), j=0,7)
-      enddo
+!      write(*,*)'gk: bfnlab:'
+!      do i=0,nbft-1
+!         write(6,'(i4,2x,8a1)') i+1, (byte_mb(k_bfnlab+i*8+j), j=0,7)
+!      enddo
 cgk end
 
 c     put effective nuclear repulsion energy in energy(1)
@@ -203,8 +203,8 @@ c     put effective nuclear repulsion energy in energy(1)
       fcore=0d0 
 
 cgk debug
-       write(*,*)'gk:  i, iat, shmap(otype)'
-       write(*,*)'gk:  nmap=',nmap
+!       write(*,*)'gk:  i, iat, shmap(otype)'
+!       write(*,*)'gk:  nmap=',nmap
 cgk end
       i=0
       do ishell=1,nshell
@@ -258,18 +258,18 @@ cgk end
       if (0 .eq. ga_nodeid()) then
 
 cgk debug
-       write(*,*)'gk: calling sifwh with aoints=',aoints
-       write(*,*)'gk:    nenrgy=',nenrgy
-       write(*,*)'gk:    ntitle=',ntitle
-       write(*,*)'gk:    ninfo=',ninfo
-       WRITE(*,*)'LB: l2rec=',info(4)
+!       write(*,*)'gk: calling sifwh with aoints=',aoints
+!       write(*,*)'gk:    nenrgy=',nenrgy
+!       write(*,*)'gk:    ntitle=',ntitle
+!       write(*,*)'gk:    ninfo=',ninfo
+!       WRITE(*,*)'LB: l2rec=',info(4)
 cgk end
          call sifwh( aoints,  ntitle,  nsym,    nbft,
      &      ninfo,   nenrgy,  nmap,    stitle,   nbpsy,   slabel,  info,
      &      byte_mb(k_bfnlab),  ietype,  energy,  imtype,  map, 
      &      ierr )
 cgk debug
-       write(*,*)'gk: back from sifwh with ierr=',ierr
+!       write(*,*)'gk: back from sifwh with ierr=',ierr
 cgk end
 
 c        start loop over integral types here.
@@ -294,7 +294,7 @@ c        start loop over integral types here.
          end if
 
 cgk debug
-      write(*,*)'gk: processing integral type: ', integ_type
+!      write(*,*)'gk: processing integral type: ', integ_type
 cgk end
 
          do jshell = 1, nshell
@@ -357,10 +357,10 @@ cgk end
                      if(ibuf.eq.n1max) then
                        numtot = numtot + ibuf
 C LB
-                       WRITE(*,*)"int_1e_sifs calling sifew1 1,
-     &last=",last,"ibvtyp=",ibvtyp
-                   WRITE(*,*)"sizeof(dbl_mb)=",sizeof(dbl_mb(k_sifval)),
-     &             "sizeof(buf)=",sizeof(dbl_mb(k_sifbuf))
+!                       WRITE(*,*)"int_1e_sifs calling sifew1 1,
+!     &last=",last,"ibvtyp=",ibvtyp
+!                   WRITE(*,*)"sizeof(dbl_mb)=",sizeof(dbl_mb(k_sifval)),
+!     &             "sizeof(buf)=",sizeof(dbl_mb(k_sifbuf))
 
 C LB
                        call sifew1(aoints, info, 2, ibuf, last, 
@@ -413,7 +413,7 @@ cgk end
       call ga_sync()            ! So that no nasty races can result
 
 cgk debug
-      write(*,*)'gk: calling int_so_sifs from int_1e_sifs'
+!      write(*,*)'gk: calling int_so_sifs from int_1e_sifs'
 *      write(*,*)'gk:  mem1=', mem1
 cgk end
       call int_so_sifs(ibas, oskel, aoints, nbft, max1e, mem1, l1rec,
@@ -421,14 +421,14 @@ cgk end
      &  fcore, ibvtyp, ibitv, ifmt1)
 
 cgk debug
-      write(*,*)'gk: calling int_mom_sifs from int_1e_sifs'
+!      write(*,*)'gk: calling int_mom_sifs from int_1e_sifs'
 *      write(*,*)'gk:  mem1=', mem1
 cgk end
       call int_mom_sifs(ibas, oskel, aoints, nbft, l1rec,
      &  n1max, dbl_mb(k_sifbuf), dbl_mb(k_sifval), ninfo, info, 
      &  fcore, ibvtyp, ibitv, ifmt1)
 cgk debug
-      write(*,*)'gk: back from int_so_sifs in int_1e_sifs'
+!      write(*,*)'gk: back from int_so_sifs in int_1e_sifs'
 cgk end
 c     
 c     chop stack at first item allocated
@@ -466,6 +466,6 @@ c
       if (oscfps) call pstat_off(ps_int_1e)
 c     
 cgk debug
-      write(*,*)'gk: leaving int_1e_sifs at end of routine'
+!      write(*,*)'gk: leaving int_1e_sifs at end of routine'
 cgk end
       end

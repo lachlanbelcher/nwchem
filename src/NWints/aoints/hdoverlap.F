@@ -58,7 +58,6 @@ C-------------------------local variables--------------------------
 c
       integer nxtask, task_size
       external nxtask
-C LB
       LOGICAL :: hlfdrv !true = calculate half-derivative overlap integrals
       INTEGER :: atmidx1, atmidx2, nmss2, idx3  ! indices the SQHDOL matrices
       INTEGER :: contf, contl, shlf, shll ! more indices
@@ -69,11 +68,10 @@ C LB
       INTEGER :: itype, jtype ! angular momentum of contraction
       INTEGER :: nintsph      ! nint after conversion to spherical
       INTEGER :: dum1, dum2, dum3 ! dummy variables
-C LB
 
 
 c LB
-      WRITE(LUOUT,*)"LB Debug, now in hdoverlap"
+!      WRITE(LUOUT,*)"LB Debug, now in hdoverlap"
 !      WRITE(LUOUT,*)"LB Debug, iab1f=",iab1f,"iab2f=",iab2f
 !      WRITE(LUOUT,*)"nmot=",nmot
       nbf=nmot ! convert to INTEGER*8
@@ -175,7 +173,7 @@ C LB
                 call intd_1eovQ(basis,ish1,basis,ish2,l_scr,scr,
      &               l_buf,H,idatom,hlfdrv)
 C LB
-                WRITE(LUOUT,*)"LB Debug, back from intd_1eovQ"
+!                WRITE(LUOUT,*)"LB Debug, back from intd_1eovQ"
 
                 status=bas_continfo(basis,ish1,itype,dum1,dum2,dum3)
                 status=bas_continfo(basis,ish2,jtype,dum1,dum2,dum3)
@@ -215,6 +213,7 @@ C       be available in C1 symmetry.
                   nmss2=il2-if2+1
                   idx3=(j-1)*nmss2
                   IF (iat1.EQ.iat2) THEN
+                    !basis functions from same atom
                     SQHDOL(atmidx1,  orbstrt(iat1)+i-1,
      &                orbstrt(iat2)+if2-1:orbstrt(iat2)+il2-1)=
      &                -H(idx3+1:idx3+nmss2+1            )!x1
@@ -225,6 +224,7 @@ C       be available in C1 symmetry.
      &                orbstrt(iat2)+if2-1:orbstrt(iat2)+il2-1)=
      &                -H(idx3+2*nint+1:idx3+2*nint+nmss2)!z1
                   ELSE
+                    !basis functions from different atoms
                     SQHDOL(atmidx1,  orbstrt(iat1)+i-1,
      &                orbstrt(iat2)+if2-1:orbstrt(iat2)+il2-1)=
      &                H(idx3+1:idx3+nmss2+1            )!x1
@@ -234,6 +234,7 @@ C       be available in C1 symmetry.
                     SQHDOL(atmidx1+2,orbstrt(iat1)+i-1,
      &                orbstrt(iat2)+if2-1:orbstrt(iat2)+il2-1)=
      &                H(idx3+2*nint+1:idx3+2*nint+nmss2)!z1
+
                     SQHDOL(atmidx2 ,orbstrt(iat1)+i-1,
      &                orbstrt(iat2)+if2-1:orbstrt(iat2)+il2-1)=
      &                H(idx3+1:idx3+nmss2+1)!x2
@@ -246,10 +247,10 @@ C       be available in C1 symmetry.
                   ENDIF
                 ENDDO
 
-                DO i=1,6
-        WRITE(LUOUT,*)"SQHDOL",i
-                  CALL output(SQHDOL(i,:,:),1,nmot,1,nmot,nmot,nmot,1)
-                ENDDO
+!                DO i=1,3*nat
+!        WRITE(LUOUT,*)"SQHDOL",i
+!                  CALL output(SQHDOL(i,:,:),1,nmot,1,nmot,nmot,nmot,1)
+!                ENDDO
 
 
  60           continue
@@ -264,7 +265,7 @@ C       be available in C1 symmetry.
       next = nxtask(-nproc,task_size)
 
 cgk debug
-      write(*,*)'gk: leaving hdoverlap'
+!      write(*,*)'gk: leaving hdoverlap'
 cgk end
 
       return
