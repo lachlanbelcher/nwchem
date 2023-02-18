@@ -185,8 +185,8 @@ cgk debug
       enddo
 
 cgk debug
-      write(*,*)'gk: ijkl = ', ijkl
-      write(*,*)'gk: mx_d2 = ', mx_d2
+*      write(*,*)'gk: ijkl = ', ijkl
+*      write(*,*)'gk: mx_d2 = ', mx_d2
 
 *     call MA_summarize_allocated_blocks
 *     avail = MA_inquire_avail(mt_dbl)

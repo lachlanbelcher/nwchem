@@ -94,7 +94,7 @@ c
 c     init pstat
 c	
 cgk debug
-      write(*,*)'gk: calling dft_pstat_init from sodft_aoints'
+*      write(*,*)'gk: calling dft_pstat_init from sodft_aoints'
 cgk end
       call dft_pstat_init(rtdb)
 cgk debug
@@ -300,12 +300,10 @@ cgk end
 cgk debug
 *     write(*,*)'gk: back from from sodft_aoints'
 cgk end
-C LB
         else if(inp_compare(.false., 'grdtrc', operation)) then
            call int_terminate
            call intd_init(rtdb, i3, bases)
            sodft_aoints = nadct_trace(rtdb,.false.,.false.)
-C LB
         else if(inp_compare(.false., 'nadtrc', operation)) then
            call int_terminate
            call intd_init(rtdb, i3, bases)
@@ -325,7 +323,7 @@ c
 c     terminate integrals 
 c     
 cgk debug
-      write(*,*)'gk: starting dft cleanup in sodft_aoints'
+*      write(*,*)'gk: starting dft cleanup in sodft_aoints'
 cgk end
       if(l1ecache) call int_1e_uncache_ga()
 cgk doing this in nadctrc, etc.

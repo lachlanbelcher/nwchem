@@ -72,7 +72,8 @@ c
       integer*4 aodens2
       logical status
       INTEGER :: g_ad1, g_hd, l_asym, k_asym, l_hd, k_hd, nadx
-      DOUBLE PRECISION, ALLOCATABLE :: SQHDOL(:,:,:)
+      !DOUBLE PRECISION, ALLOCATABLE :: SQHDOL(:,:,:)
+      DOUBLE PRECISION :: SQHDOL(3*nat,nbft,nbft)
       DOUBLE PRECISION :: nadxfl(nat,3)
       INTEGER*4 :: aodensa, infoa(ninfo)
       LOGICAL :: trans
@@ -264,13 +265,13 @@ c       get antisymmetric density  matrix
 c         put  antisymmetric density in global arrays
           call asif2ga(g_ad1,dbl_mb(k_sm),ibas,nbft)
 
-          write(*,*)'gk: antisymmteric density matrix global array'
+*          write(*,*)'gk: antisymmteric density matrix global array'
           call ga_print(g_ad1)
         ENDIF
 
-        write(*,*)'gk: effective densitiy matrix global array'
+*        write(*,*)'gk: effective densitiy matrix global array'
         call ga_print(g_d1)
-        write(*,*)'gk: effective fock matrix global array'
+*        write(*,*)'gk: effective fock matrix global array'
         call ga_print(g_eff)
 C LB
       end if
@@ -362,8 +363,8 @@ c     g_force does not appear to be used
 
 C LB  calculate half-derivative overlap matrices
       IF (trans) THEN
-        IF(.NOT. ALLOCATED(SQHDOL)) THEN
-         ALLOCATE(SQHDOL(3*nat,nbft,nbft))
+!        IF(.NOT. ALLOCATED(SQHDOL)) THEN
+!         ALLOCATE(SQHDOL(3*nat,nbft,nbft))
           SQHDOL=0.0D0
         ENDIF
         if (.not. bas_numbf(AO_bas_han, nbf_ao)) then

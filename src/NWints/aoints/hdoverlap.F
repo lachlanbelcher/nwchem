@@ -180,8 +180,8 @@ C LB
                 nintsph=(2*itype+1)*(2*jtype+1)
                 WRITE(LUOUT,*)"nintsph=",nintsph
 
-                WRITE(LUOUT,*)"Ova="
-                WRITE(LUOUT,*)H(1:nintsph*6)
+!                WRITE(LUOUT,*)"Ova="
+!                WRITE(LUOUT,*)H(1:nintsph*6)
 
 C LB    We now have H (BO2i) which includes the integrals organized by
 C       subshell and dx dy dz wrt both atom centers involved.  We now

@@ -38,10 +38,10 @@ c
      2 ninfo, nenrgy, nmap, ierr)
 c
 cgk debug
-      write(*,*)'gk: in rdhcid, nsym=',nsym
-      write(*,*)'gk:  nmot = ', nmot
-      write(*,*)'gk:  nmap = ', nmap
-      write(*,*)'gk:  nenrgy = ', nenrgy
+*      write(*,*)'gk: in rdhcid, nsym=',nsym
+*      write(*,*)'gk:  nmot = ', nmot
+*      write(*,*)'gk:  nmap = ', nmap
+*      write(*,*)'gk:  nenrgy = ', nenrgy
 cgk end
       if (ierr .ne. 0) then
          call bummer('rdhcid: from sifrh1, ierr=',ierr,faterr)

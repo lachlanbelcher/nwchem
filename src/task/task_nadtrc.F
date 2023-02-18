@@ -18,7 +18,7 @@ c
       logical oecce
 cc
 cgk debug
-      write(*,*)'gk: entered task_nadtrc'
+*      write(*,*)'gk: entered task_nadtrc'
 cgk end
       oecce = .false.
       cpu  = util_cpusec()
@@ -57,7 +57,7 @@ c
 c         
       task_nadtrc = status
 cgk debug
-      write(*,*)'gk: leaving task_nadtrc'
+*      write(*,*)'gk: leaving task_nadtrc'
 cgk end
 c
       end

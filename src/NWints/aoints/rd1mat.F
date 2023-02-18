@@ -76,8 +76,8 @@ cgk end
         map(i)=i
       enddo
 cgk debug
-      write(*,*)'gk: calling sifr1x'
-      WRITE(*,*)"LB: itypeb=",itypeb
+*      write(*,*)'gk: calling sifr1x'
+*      WRITE(*,*)"LB: itypeb=",itypeb
 cgk end
       call sifr1x(
      1 ntape, infomo, itypea, itypeb,

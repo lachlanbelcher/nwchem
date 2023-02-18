@@ -31,7 +31,7 @@ cc
       logical oecce
 cc
 cgk debug
-      write(*,*)'gk: entered task_aoints'
+*      write(*,*)'gk: entered task_aoints'
 cgk end
       oecce = .false.
       cpu  = util_cpusec()
@@ -129,7 +129,7 @@ c
 c         
       task_aoints = status
 cgk debug
-      write(*,*)'gk: leaving task_aoints'
+*      write(*,*)'gk: leaving task_aoints'
 cgk end
 c
       end
@@ -194,7 +194,7 @@ c
 *     integer which_mp2
 c
 cgk debug
-      write(*,*)'gk: in task_aoints_doit'
+*      write(*,*)'gk: in task_aoints_doit'
 cgk end
       call ecce_print_module_entry('task energy')
 c
@@ -421,6 +421,6 @@ c
       task_aoints_doit = status
 c
 cgk debug
-       write(*,*)'gk: leaving task_aoints_doit'
+*       write(*,*)'gk: leaving task_aoints_doit'
 cgk end
       end
