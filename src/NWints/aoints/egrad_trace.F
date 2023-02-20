@@ -366,11 +366,11 @@ C LB  calculate half-derivative overlap matrices
 !        IF(.NOT. ALLOCATED(SQHDOL)) THEN
 !         ALLOCATE(SQHDOL(3*nat,nbft,nbft))
           SQHDOL=0.0D0
-        ENDIF
+!        ENDIF
         if (.not. bas_numbf(AO_bas_han, nbf_ao)) then
            call errquit('Exiting from nadct_trace',1, BASIS_ERR)
         endif 
-        CALL hdoverlap(dbl_mb(l_buf), k_buf, k_scr, AO_bas_han, geom,
+        CALL hdoverlap(dbl_mb(k_buf), l_buf, l_scr, AO_bas_han, geom,
      &                  nproc, nat, max1e, mem1, SQHDOL, nbft)
 
         nadxfl=0D0

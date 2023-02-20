@@ -325,8 +325,8 @@ cgk debug
 *     write(*,*)'gk:  numtot=', numtot
 cgk end
 C LB
-       WRITE(*,*)"LB: in int_mom_sifs"
-       WRITE(*,*)"LB: calling sifew1 2 last=",last,"ibvtyp=",ibvtyp
+!       WRITE(*,*)"LB: in int_mom_sifs"
+!       WRITE(*,*)"LB: calling sifew1 2 last=",last,"ibvtyp=",ibvtyp
 C LB
           call sifew1(aoints, info, 2, ibuf, last, 
      &      itypea, itypeb, ifmt1, ibvtyp, 

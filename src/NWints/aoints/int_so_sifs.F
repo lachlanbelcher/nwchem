@@ -88,9 +88,6 @@ c
 cgk debug
 *      write(*,*)'gk: **** entered int_so_sifs'
 cgk end
-C LB
-      IF (.NOT.MA_verify_allocator_stuff()) stop 'err10'
-C LB
       basok=.false.
       odbug=.true.
       osome=.true.
