@@ -372,7 +372,7 @@ C LB  calculate half-derivative overlap matrices
         endif 
 !        CALL hdoverlap(dbl_mb(k_buf), l_buf, l_scr, AO_bas_han, geom,
 !     &                  nproc, nat, max1e, mem1, SQHDOL, nbft)
-        CALL hdoverlap(dbl_mb(l_buf), k_buf, k_scr, AO_bas_han, geom,
+        CALL hdoverlap(dbl_mb(k_buf), lbuf1, lscratch, AO_bas_han, geom,
      &                  nproc, nat, max1e, mem1, SQHDOL, nbft)
 
         nadxfl=0D0
