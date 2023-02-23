@@ -72,11 +72,12 @@ c
       integer*4 aodens2
       logical status
       INTEGER :: g_ad1, g_hd, l_asym, k_asym, l_hd, k_hd, nadx
-      !DOUBLE PRECISION, ALLOCATABLE :: SQHDOL(:,:,:)
-      DOUBLE PRECISION :: SQHDOL(3*nat,nbft,nbft)
       DOUBLE PRECISION :: nadxfl(nat,3)
+      INTEGER :: hdol ! Handle or half-drv ovlp GA
       INTEGER*4 :: aodensa, infoa(ninfo)
       LOGICAL :: trans
+      INTEGER :: dims(3),chunk(3),iend(2),jstrt(3),jend(3) 
+      INTEGER, PARAMETER :: istrt(2) = (/1,1/)
 
       me = ga_nodeid()
       nproc = ga_nnodes()
@@ -160,15 +161,6 @@ c     memory for maps
      &     l_map, k_map))
      $     call errquit('egrad_trace: ma failed getting map',  
      &        sz_bf_list, MA_ERR)
-C LB
-c     memory for half derivative overlap
-      ! Currently the allocatable array SQHDOL holds the hdo integrals
-!      if (.not. MA_push_get(MT_DBL, 3*nat*nbft*nbft,'egrad_trace:asym',
-!     &     l_hd, k_hd))
-!     $     call errquit('egrad_trace: ma failed getting asym',  
-!     &        3*nat*nbft*nbft, MA_ERR)
-
-C LB
       
       nmpsy(1)=nbft
       nbfs=nbft
@@ -188,9 +180,23 @@ C LB
 c     antisymmetric transition density
       g_ad1 = ga_create_atom_blocked(geom, ibas, 
      &  'antisymmteric density matrix')
-c     half-derivative overlap
+c     half-derivative overlap, single derivative scratch
       g_hd = ga_create_atom_blocked(geom, ibas,
      &  'half-derivative overlap matrix')
+c     half-derivative overlap, all derivatives (3*# atoms)
+      dims(1) = 3*nat
+      dims(2) = nbft
+      dims(3) = nbft
+      chunk(1)= dims(1)
+      chunk(2)= -1
+      chunk(3)= -1
+      IF(.NOT. nga_create(MT_DBL,3,dims,
+     &  'half-derivative overlap GA',chunk,hdol))     
+     $  call errquit('egrad_trace: failed to create hdol GA',
+     &       3*nat*nbft*nbft,GA_ERR)
+      CALL ga_zero(hdol)
+      CALL ga_print(hdol)
+        
 C LB
      
 c   Do this for node 0 only to avoid conflics reading aodens
@@ -363,27 +369,34 @@ c     g_force does not appear to be used
 
 C LB  calculate half-derivative overlap matrices
       IF (trans) THEN
-!        IF(.NOT. ALLOCATED(SQHDOL)) THEN
-!         ALLOCATE(SQHDOL(3*nat,nbft,nbft))
-          SQHDOL=0.0D0
 !        ENDIF
-        if (.not. bas_numbf(AO_bas_han, nbf_ao)) then
+       if (.not. bas_numbf(AO_bas_han, nbf_ao)) then
            call errquit('Exiting from nadct_trace',1, BASIS_ERR)
         endif 
-!        CALL hdoverlap(dbl_mb(k_buf), l_buf, l_scr, AO_bas_han, geom,
-!     &                  nproc, nat, max1e, mem1, SQHDOL, nbft)
         CALL hdoverlap(dbl_mb(k_buf), lbuf1, lscratch, AO_bas_han, geom,
-     &                  nproc, nat, max1e, mem1, SQHDOL, nbft)
+     &                  nproc, nat, max1e, mem1, hdol, nbft)
 
         nadxfl=0D0
-        DO i = 0, nat-1
-          DO j = 0, 2
-!            WRITE(LUOUT,*)"LB egrad_trace, SQHDOL",i*3+j+1
-            CALL ga_put(g_hd,1,nbft,1,nbft,SQHDOL(i*3+j+1,:,:),nbft)
+        iend(1) =nbft
+        iend(2) =nbft
+        jstrt(2)=1
+        jstrt(3)=1
+        jend(2) =nbft
+        jend(3) =nbft
+
+
+        !CALL ga_print(hdol)
+        DO i = 0, nat-1 !atom number
+          DO j = 0, 2   !derivative direction
+            jstrt(1)=i*3+j+1
+            jend(1) =i*3+j+1
+            !WRITE(*,*)"In egrad_trace, jstrt=",jstrt(1)
+            CALL nga_copy_patch('N',hdol,jstrt,jend,g_hd,istrt,iend)
             CALL ga_print(g_hd)
             nadxfl(i+1,j+1)=-2*ga_ddot(g_hd,g_ad1)
           ENDDO
         ENDDO
+        !CALL ga_print(hdol)
         WRITE(LUOUT,*)"nadxfl :"
         CALL output(nadxfl,1,nat,1,3,nat,3,1)
         OPEN(nadx,file='nadxfl',form='formatted')

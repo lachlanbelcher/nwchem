@@ -1,5 +1,5 @@
       subroutine hdoverlap ( H, l_buf, l_scr, basis, geom, nproc,
-     &                          nat, max1e, mem1, SQHDOL, nmot)
+     &                          nat, max1e, mem1, hdol, nmot)
 C LB based loosely on grad1.  Program to calculate half-derivative overlap
 C integrals, 1/2[<i|j^x>-<i^x|j>].  This capability already exists
 C within intd_1eov, it just needed some teasing out.
@@ -22,8 +22,9 @@ C within intd_1eov, it just needed some teasing out.
 
 C-------------------------parameters--------------------------------
       INTEGER :: basis, lbus, max1e, mem1, nproc, nat, nbf
-      INTEGER*4 :: nmot
+      INTEGER :: nmot
       INTEGER :: l_buf, l_scr, geom
+      INTEGER :: hdol !handle for hdol GA
 
       double precision :: H ! integral derivatives
       DOUBLE PRECISION :: scr ! scratch
@@ -68,10 +69,13 @@ c
       INTEGER :: itype, jtype ! angular momentum of contraction
       INTEGER :: nintsph      ! nint after conversion to spherical
       INTEGER :: dum1, dum2, dum3 ! dummy variables
+      INTEGER :: dims(3)
+      INTEGER, PARAMETER :: istrt(3) = (/1,1,1/)
 
 
 c LB
 !      WRITE(LUOUT,*)"LB Debug, now in hdoverlap"
+      SQHDOL=0.0D0
 !      WRITE(LUOUT,*)"LB Debug, iab1f=",iab1f,"iab2f=",iab2f
 !      WRITE(LUOUT,*)"nmot=",nmot
       nbf=nmot ! convert to INTEGER*8
@@ -178,7 +182,7 @@ C LB
                 status=bas_continfo(basis,ish1,itype,dum1,dum2,dum3)
                 status=bas_continfo(basis,ish2,jtype,dum1,dum2,dum3)
                 nintsph=(2*itype+1)*(2*jtype+1)
-                WRITE(LUOUT,*)"nintsph=",nintsph
+!                WRITE(LUOUT,*)"nintsph=",nintsph
 
 !                WRITE(LUOUT,*)"Ova="
 !                WRITE(LUOUT,*)H(1:nintsph*6)
@@ -248,7 +252,7 @@ C       be available in C1 symmetry.
                 ENDDO
 
 !                DO i=1,3*nat
-!        WRITE(LUOUT,*)"SQHDOL",i
+!                  WRITE(LUOUT,*)"SQHDOL",i
 !                  CALL output(SQHDOL(i,:,:),1,nmot,1,nmot,nmot,nmot,1)
 !                ENDDO
 
@@ -263,6 +267,11 @@ C       be available in C1 symmetry.
  80     continue
  90   continue
       next = nxtask(-nproc,task_size)
+      !copy temp SQHDOL matrix too hdol global array
+      dims(1) = 3*nat
+      dims(2) = nmot
+      dims(3) = nmot
+      CALL nga_put(hdol,istrt,dims,SQHDOL,dims(1:2))
 
 cgk debug
 !      write(*,*)'gk: leaving hdoverlap'
