@@ -419,7 +419,7 @@ BUILDING_PYTHON = $(filter $(NWSUBDIRS),python)
 # Establish some required defaults which may need overriding
 # for some machines
 
-SHELL = /bin/sh
+SHELL = /bin/bash
 ARFLAGS = r
 FDEBUG = -g
 CDEBUG = -g
@@ -1502,7 +1502,7 @@ ifeq ($(TARGET),$(findstring $(TARGET),LINUX CYGNUS CYGWIN))
 # Linux or Cygwin under Windows running on an x86 using g77
 #
     NICE = nice -n 2
-    SHELL := $(NICE) /bin/sh
+    SHELL := $(NICE) /bin/bash
 
     ifeq ($(BLASOPT),)
         CORE_SUBDIRS_EXTRA += blas
@@ -3521,11 +3521,13 @@ ifdef USE_MPI
         NWMPI_INCLUDE = $(shell PATH=$(NWCHEM_TOP)/src/libext/bin:$(PATH) $(NWCHEM_TOP)/src/tools/guess-mpidefs --mpi_include)
         NWMPI_LIB     = $(shell PATH=$(NWCHEM_TOP)/src/libext/bin:$(PATH)  $(NWCHEM_TOP)/src/tools/guess-mpidefs --mpi_lib)
         NWLIBMPI      = $(shell PATH=$(NWCHEM_TOP)/src/libext/bin:$(PATH) $(NWCHEM_TOP)/src/tools/guess-mpidefs --libmpi)
-        NWLIBMPI	+= $(shell pkg-config3 --libs-only-L hwloc 2> /dev/null)
-        GOT_BREW = $(shell command -v brew 2> /dev/null)
-        ifdef GOT_BREW
-             NWLIBMPI	+= -L$(shell brew --prefix)/lib
-        endif
+        NWLIBMPI	+= $(shell pkg-config --libs-only-L hwloc 2> /dev/null)
+        ifeq ($(NWCHEM_TARGET),MACX64)
+           GOT_BREW = $(shell command -v brew 2> /dev/null)
+           ifdef GOT_BREW
+              NWLIBMPI	+= -L$(shell brew --prefix)/lib
+           endif
+	endif
     else ifdef FORCE_MPI_ENV
         ifndef MPI_INCLUDE
             errormpi1:
@@ -3644,7 +3646,7 @@ endif
 ifdef USE_LIBXC
     DEFINES += -DUSE_LIBXC
     EXTRA_LIBS += -L$(NWCHEM_TOP)/src/libext/libxc/install/lib
-    EXTRA_LIBS += -lxcf03 -lxc
+    EXTRA_LIBS += -lnwc_xcf03 -lnwc_xc
 endif
 
 # we use an external libxc library out of LIBXC_DIR
