@@ -12,21 +12,21 @@ c
       implicit none
 c
       character*80 title(*)
-      integer*4 infocd(*)
-      integer*4 ntitle,nsym,nmot,ninfo,nenrgy,ierr,nmap
-      integer*4 nmotx
+      integer infocd(*)
+      integer ntitle,nsym,nmot,ninfo,nenrgy,ierr,nmap
+      integer nmotx
       parameter (nmotx=255)
-      integer*4 i, ntitmx, denfl,idummy, nsymx, nengmx
+      integer i, ntitmx, denfl,idummy, nsymx, nengmx
       parameter( ntitmx = 30, nsymx=1, nengmx=20)
       real*8 cienrg(nengmx)
       character*4 slabel(nsymx)
       character*8 cidlab(nmotx)
-      integer*4 nbpsy(*),cietyp(nengmx)
+      integer nbpsy(*),cietyp(nengmx)
 c
       real*8    one,     zero
       parameter(one=1d0, zero=0d0)
 c
-      integer*4 nmotn, nsymn
+      integer nmotn, nsymn
 c
 c  bummer error types.
       integer   wrnerr,  nfterr,  faterr

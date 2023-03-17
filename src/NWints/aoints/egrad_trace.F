@@ -20,9 +20,9 @@
     
       
       integer ibas
-      integer*4 aodens
-      integer*4 ninfo
-      integer*4 info(ninfo)  ! not to be confused with NWChem info
+      integer aodens
+      integer ninfo
+      integer info(ninfo)  ! not to be confused with NWChem info
       integer nbft
       integer g_force, g_d1, g_eff
       integer g_sod(3)
@@ -61,20 +61,20 @@
 c  
 c     sifs parameters
 c
-      integer*4 l1rec, n1max, l2rec, n2max, ierr 
-      integer*4 nsym, nmap
+      integer l1rec, n1max, l2rec, n2max, ierr 
+      integer nsym, nmap
       parameter(nsym=1, nmap=0)
-*     integer*4 ietype(mxenrgy)
-      integer*4 kntin(nsym), nmpsy(nsym)
+*     integer ietype(mxenrgy)
+      integer kntin(nsym), nmpsy(nsym)
 *     real*8 energy(nenrgy)
-      integer*4 itypea, itypeb
-      integer*4 numd1s, nbfs
-      integer*4 aodens2
+      integer itypea, itypeb
+      integer numd1s, nbfs
+      integer aodens2
       logical status
       INTEGER :: g_ad1, g_hd, l_asym, k_asym, l_hd, k_hd, nadx
       DOUBLE PRECISION :: nadxfl(nat,3)
       INTEGER :: hdol ! Handle or half-drv ovlp GA
-      INTEGER*4 :: aodensa, infoa(ninfo)
+      INTEGER :: aodensa, infoa(ninfo)
       LOGICAL :: trans
       INTEGER :: dims(3),chunk(3),iend(2),jstrt(3),jend(3) 
       INTEGER, PARAMETER :: istrt(2) = (/1,1/)
