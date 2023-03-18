@@ -29,7 +29,7 @@ blaswrapper.f izero.F cdcopy.f\
 colib1.f colib2.f colib3.f colib4.f \
 colib5.f colib6.f colib7.f colib8.f \
 colib8a.f colib9.f:
-	./build_sifs.sh
+	./build_colib.sh
 
   MAKEFLAGS = -j 1 --no-print-directory
 
