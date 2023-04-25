@@ -25,14 +25,20 @@ endif
 
 include ../../config/makelib.h
 
+
 blaswrapper.f izero.F cdcopy.f\
 colib1.f colib2.f colib3.f colib4.f \
 colib5.f colib6.f colib7.f colib8.f \
 colib8a.f colib9.f:
 	./build_colib.sh
 
-  MAKEFLAGS = -j 1 --no-print-directory
+MAKEFLAGS = -j 1 --no-print-directory
+ALLF = $(filter-out ./sifs_stubs.F, $(shell find . -name '*.F'))
+
+
+bummer.F:
+	./build_colib.sh
 
 cleanF:
-	@rm -rf colu* *F dependencies
+	@rm -rf colu* $(ALLF)  dependencies sifs.patched
 

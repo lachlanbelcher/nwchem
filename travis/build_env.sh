@@ -29,6 +29,13 @@ echo DISTR is "$DISTR"
 #  HOMEBREW_NO_AUTO_UPDATE=1 brew cask uninstall oclint || true  
 #  HOMEBREW_NO_INSTALL_CLEANUP=1  HOMEBREW_NO_AUTO_UPDATE=1 brew install gcc "$MPI_IMPL" openblas python3 ||true
      HOMEBREW_NO_INSTALL_CLEANUP=1  HOMEBREW_NO_AUTO_UPDATE=1 brew install gcc "$MPI_IMPL" python3 gsed grep automake autoconf ||true
+     if [[ "$FC" != "gfortran" ]]; then
+	 #install non default gfortran, ie gfortran-9
+	 #get version
+	 mygccver=$(echo "$FC"|cut -d - -f 2)
+	 echo mygccver is "$mygccver"
+	 HOMEBREW_NO_INSTALL_CLEANUP=1  HOMEBREW_NO_AUTO_UPDATE=1 brew reinstall gcc@"$mygccver" || true
+     fi
      #hack to fix Github actions mpif90
      gccver=`brew list --versions gcc| head -1 |cut -c 5-`
      echo brew gccver is $gccver
@@ -216,7 +223,7 @@ if [[ "$os" == "Linux" ]]; then
 	if [[ "$FC" == "nvfortran" ]]; then
 	    sudo apt-get -y install lmod g++ libtinfo5 libncursesw5 lua-posix lua-filesystem lua-lpeg lua-luaossl
 	    nv_major=23
-	    nv_minor=1
+	    nv_minor=3
 	    nverdot="$nv_major"."$nv_minor"
 	    nverdash="$nv_major"-"$nv_minor"
 	    arch_dpkg=`dpkg --print-architecture`
