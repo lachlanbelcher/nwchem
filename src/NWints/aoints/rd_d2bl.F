@@ -48,7 +48,7 @@ cgk debug
 cgk end
       call sifrd2(sfile,   info,   nipv,    iretbv,
      &            buffer,  nbuf,   last,    itypea,
-     &            itypeb,  ifmt,   ibvtyp,  vals,
+     &            itypeb,  ibvtyp,  vals,
      &            labs,    ibitv,  ierr)
 cgk debug
 !      write(*,*)'gk: after sifrd2'
