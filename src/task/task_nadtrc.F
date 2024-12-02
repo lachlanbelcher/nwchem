@@ -33,7 +33,7 @@ c
      $     call errquit('task:nadtrc: theory not specified',0, 
      $       RTDB_ERR)
 
-      if (theory .ne. 'sodft') then
+      if ((theory .ne. 'sodft').and.(theory .ne. 'dft')) then
         call errquit('task_nadtrc: theory not supported for nadtrc'
      &    ,0,RTDB_ERR)
       else
