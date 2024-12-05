@@ -85,9 +85,9 @@ c
       nproc = ga_nnodes()
 c
 cgk debug
-      !write(6,*)'gk: entered egrad_trace'
-*     write(*,*)'gk: nbft = ', nbft
-      !write(6,*)'gk: nadct = ',nadct
+      write(6,*)'gk: entered egrad_trace'
+      write(*,*)'gk: nbft = ', nbft
+      write(6,*)'gk: nadct = ',nadct
       ignore=MA_set_auto_verify(.true.)
       ignore=MA_set_error_print(.true.)
       ignore=MA_set_hard_fail(.true.)
@@ -415,8 +415,8 @@ C LB  calculate half-derivative overlap matrices
             !WRITE(*,*)"In egrad_trace, jstrt=",jstrt(1)
             CALL nga_copy_patch('N',hdol,jstrt,jend,g_hd,istrt,iend)
             CALL ga_print(g_hd)
-            !nadxfl(i+1,j+1)=-2*ga_ddot(g_hd,g_ad1)
-            nadxfl(i+1,j+1)=2*ga_ddot(g_hd,g_ad1)
+            nadxfl(i+1,j+1)=-2*ga_ddot(g_hd,g_ad1)
+            !nadxfl(i+1,j+1)=2*ga_ddot(g_hd,g_ad1)
           ENDDO
         ENDDO
         !CALL ga_print(hdol)
@@ -685,7 +685,7 @@ c     two electron trace
       call schwarz_tidy()
       call intd_terminate()
 
-      !WRITE(6,*)"LB, nadct=",nadct
+      WRITE(6,*)"LB, nadct=",nadct
       if(nadct) then
         do j=1, nat
          do i=1,3

@@ -112,8 +112,8 @@ C LB
 
           ijatom = ijatom + 1
 C LB
-!          WRITE(LUOUT,*)"LB Debug, iat1=",iat1,"iat2=",iat2
-!     &                 ,"ijatom=",ijatom
+          WRITE(LUOUT,'(a,1i5,a,1i5,a,1i5)')"LB Debug, iat1=",iat1,
+     &                  " iat2=",iat2," ijatom=",ijatom
 C LB
           if ( ijatom .eq. next ) then
 
@@ -149,19 +149,19 @@ c
 
               do 60, ish2 = iac2f, iac2l
 C LB
-!                WRITE(LUOUT,*)"LB Debug, ishl=",ish1,"ish2=",ish2
+        WRITE(LUOUT,'(a,1i5,a,1i5)')"LB Debug, ishl=",ish1," ish2=",ish2
 C LB
 
 C               shell block in atomic (D/Dw)-matrix block
                 status = bas_cn2bfr(basis,ish1,if1,il1)
 C LB
-!                WRITE(LUOUT,*)"LB hdoverlap, if1=",if1,"il1=",il1
+        WRITE(LUOUT,'(a,1i5,a,1i5)')"LB hdoverlap, if1=",if1," il1=",il1
 C LB
                 if1 = if1 - iab1f + 1
                 il1 = il1 - iab1f + 1
                 status = bas_cn2bfr(basis,ish2,if2,il2)
 C LB
-!                WRITE(LUOUT,*)"LB hdoverlap, if2=",if2,"il2=",il2
+        WRITE(LUOUT,'(a,1i5,a,1i5)')"LB hdoverlap, if2=",if2," il2=",il2
 C LB
                 if2 = if2 - iab2f + 1
                 il2 = il2 - iab2f + 1
@@ -171,8 +171,8 @@ C LB
 C               half-derivative overlap derivatives
 C LB
                 hlfdrv=.true.
-!                WRITE(LUOUT,*)"LB hd, iat1=",iat1,"iat2=",iat2
-!                WRITE(LUOUT,*)"LB hd, ish1=",ish1,"ish2=",ish2
+         WRITE(LUOUT,'(a,1i5,a,1i5)')"LB hd, iat1=",iat1," iat2=",iat2
+         WRITE(LUOUT,'(a,1i5,a,1i5)')"LB hd, ish1=",ish1," ish2=",ish2
 C LB
                 call intd_1eovQ(basis,ish1,basis,ish2,l_scr,scr,
      &               l_buf,H,idatom,hlfdrv)
@@ -182,10 +182,10 @@ C LB
                 status=bas_continfo(basis,ish1,itype,dum1,dum2,dum3)
                 status=bas_continfo(basis,ish2,jtype,dum1,dum2,dum3)
                 nintsph=(2*itype+1)*(2*jtype+1)
-!                WRITE(LUOUT,*)"nintsph=",nintsph
+                WRITE(LUOUT,*)"nintsph=",nintsph
 
-!                WRITE(LUOUT,*)"Ova="
-!                WRITE(LUOUT,*)H(1:nintsph*6)
+                WRITE(LUOUT,*)"Ova="
+                WRITE(LUOUT,*)H(1:nintsph*nat*3)
 
 C LB    We now have H (BO2i) which includes the integrals organized by
 C       subshell and dx dy dz wrt both atom centers involved.  We now
@@ -194,33 +194,39 @@ C       atom center derivative. I am not going to do this by symmetry
 C       block right now since the initial SONADCT capability will only
 C       be available in C1 symmetry.
         
-!                WRITE(LUOUT,*)"LB hdoverlap, orbstrt=",orbstrt
-!                WRITE(LUOUT,*)"Bra Atom=",iat1,"shell=",ish1
-!                WRITE(LUOUT,*)"Ket Atom=",iat2,"shell=",ish2
+                WRITE(LUOUT,*)"LB hdoverlap, orbstrt=",orbstrt
+                WRITE(LUOUT,*)"Bra Atom=",iat1,"shell=",ish1
+                WRITE(LUOUT,*)"Ket Atom=",iat2,"shell=",ish2
                 atmidx1=iat1*3-2 !index of atom center derivative
                 atmidx2=iat2*3-2 !index of atom center derivative
-!                WRITE(LUOUT,*)"if1=",if1,"il1=",il1
-!                WRITE(LUOUT,*)"if2=",if2,"il2=",il2
-!                WRITE(LUOUT,*)"iac1f=",iac1f,"iac1l=",iac1l
-!                WRITE(LUOUT,*)"iac2f=",iac2f,"iac2l=",iac2l
+                WRITE(LUOUT,*)"if1=",if1,"il1=",il1
+                WRITE(LUOUT,*)"if2=",if2,"il2=",il2
+                WRITE(LUOUT,*)"iac1f=",iac1f,"iac1l=",iac1l
+                WRITE(LUOUT,*)"iac2f=",iac2f,"iac2l=",iac2l
 
                 j=0
-                IF (bas_spherical(basis)) THEN
+                WRITE(*,*)"LB bas_spherical   =",bas_spherical(basis)
+                WRITE(*,*)"LB bas_is_spherical=",bas_is_spherical(basis)
+                IF (bas_is_spherical(basis)) THEN
                   il1=if1+2*itype
                   il2=if2+2*jtype
                   nint=nintsph
-!                  WRITE(LUOUT,*)"in spherical region,
-!     &                           il1=",il1,"il2=",il2
+                  WRITE(LUOUT,*)"in spherical region,
+     &                           il1=",il1,"il2=",il2
                 ENDIF
+      WRITE(*,'(a,1i4,a,1i4)')"LB, atmidx1=",atmidx1," atmidx2=",atmidx2
                 DO i = if1, il1
                   j=j+1
+      WRITE(*,'(a,1i4,a,1i4)')"i=",i," j=",j
+      WRITE(*,'(a,2i4)')"orbstrt=",orbstrt(iat1),orbstrt(iat2)
                   nmss2=il2-if2+1
                   idx3=(j-1)*nmss2
+      WRITE(*,'(a,1i4)')"idx3=",idx3
                   IF (iat1.EQ.iat2) THEN
                     !basis functions from same atom
                     SQHDOL(atmidx1,  orbstrt(iat1)+i-1,
      &                orbstrt(iat2)+if2-1:orbstrt(iat2)+il2-1)=
-     &                -H(idx3+1:idx3+nmss2+1            )!x1
+     &                -H(idx3+1:idx3+nmss2              )!x1
                     SQHDOL(atmidx1+1,orbstrt(iat1)+i-1,
      &                orbstrt(iat2)+if2-1:orbstrt(iat2)+il2-1)=
      &                -H(idx3+nint+1:idx3+nint+nmss2    )!y1
@@ -229,32 +235,68 @@ C       be available in C1 symmetry.
      &                -H(idx3+2*nint+1:idx3+2*nint+nmss2)!z1
                   ELSE
                     !basis functions from different atoms
+      WRITE(*,'(a,1i4,a,1i4,a)')"H idx",idx3+1," to",idx3+nmss2,
+     &" including integrals"
+      WRITE(*,*)H(idx3+1:idx3+nmss2)
+      WRITE(*,'(a,3i4,a,3i4)')"Are assigned to SQHDOL elements", 
+     &           atmidx1, orbstrt(iat1)+i-1,orbstrt(iat2)+if2-1, " to"
+     &,          atmidx1, orbstrt(iat1)+i-1,orbstrt(iat2)+il2-1 
                     SQHDOL(atmidx1,  orbstrt(iat1)+i-1,
      &                orbstrt(iat2)+if2-1:orbstrt(iat2)+il2-1)=
-     &                H(idx3+1:idx3+nmss2+1            )!x1
+     &                H(idx3+1:idx3+nmss2              )!x1
+      WRITE(*,'(a,1i4,a,1i4,a)')"H idx",idx3+nint+1," to",
+     &idx3+nint+nmss2," including integrals"
+      WRITE(*,*)H(idx3+nint+1:idx3+nint+nmss2)
+      WRITE(*,'(a,3i4,a,3i4)')"Are assigned to SQHDOL elements", 
+     &           atmidx1+1, orbstrt(iat1)+i-1,orbstrt(iat2)+if2-1, " to"
+     &,          atmidx1+1, orbstrt(iat1)+i-1,orbstrt(iat2)+il2-1 
                     SQHDOL(atmidx1+1,orbstrt(iat1)+i-1,
      &                orbstrt(iat2)+if2-1:orbstrt(iat2)+il2-1)=
      &                H(idx3+nint+1:idx3+nint+nmss2    )!y1
+      WRITE(*,'(a,1i4,a,1i4,a)')"H idx",idx3+2*nint+1," to",
+     &  idx3+2*nint+nmss2," including integrals"
+      WRITE(*,*)H(idx3+2*nint+1:idx3+2*nint+nmss2)
+      WRITE(*,'(a,3i4,a,3i4)')"Are assigned to SQHDOL elements", 
+     &           atmidx1+2, orbstrt(iat1)+i-1,orbstrt(iat2)+if2-1, " to"
+     &,          atmidx1+2, orbstrt(iat1)+i-1,orbstrt(iat2)+il2-1 
                     SQHDOL(atmidx1+2,orbstrt(iat1)+i-1,
      &                orbstrt(iat2)+if2-1:orbstrt(iat2)+il2-1)=
      &                H(idx3+2*nint+1:idx3+2*nint+nmss2)!z1
 
+      WRITE(*,'(a,1i4,a,1i4,a)')"H idx",idx3+1," to",
+     &  idx3+nmss2," including integrals"
+      WRITE(*,*)H(idx3+1:idx3+nmss2)
+      WRITE(*,'(a,3i4,a,3i4)')"Are assigned to SQHDOL elements", 
+     &           atmidx2, orbstrt(iat1)+i-1,orbstrt(iat2)+if2-1, " to"
+     &,          atmidx2, orbstrt(iat1)+i-1,orbstrt(iat2)+il2-1 
                     SQHDOL(atmidx2 ,orbstrt(iat1)+i-1,
      &                orbstrt(iat2)+if2-1:orbstrt(iat2)+il2-1)=
-     &                H(idx3+1:idx3+nmss2+1)!x2
+     &                H(idx3+1:idx3+nmss2              )!x2
+      WRITE(*,'(a,1i4,a,1i4,a)')"H idx",idx3+nint+1," to"
+     &,idx3+nint+nmss2," including integrals"
+      WRITE(*,*)H(idx3+nint+1:idx3+nint+nmss2)
+      WRITE(*,'(a,3i4,a,3i4)')"Are assigned to SQHDOL elements", 
+     &           atmidx2+1, orbstrt(iat1)+i-1,orbstrt(iat2)+if2-1, " to"
+     &,          atmidx2+1, orbstrt(iat1)+i-1,orbstrt(iat2)+il2-1 
                     SQHDOL(atmidx2+1,orbstrt(iat1)+i-1,
      &                orbstrt(iat2)+if2-1:orbstrt(iat2)+il2-1)=
-     &                H(idx3+nint+1:idx3+nint+nmss2)!y2
+     &                H(idx3+nint+1:idx3+nint+nmss2    )!y2
+      WRITE(*,'(a,1i4,a,1i4,a)')"H idx",idx3+2*nint+1," to",
+     &  idx3+2*nint+nmss2," including integrals"
+      WRITE(*,*)H(idx3+2*nint+1:idx3+2*nint+nmss2)
+      WRITE(*,'(a,3i4,a,3i4)')"Are assigned to SQHDOL elements", 
+     &           atmidx2+2, orbstrt(iat1)+i-1,orbstrt(iat2)+if2-1, " to"
+     &,          atmidx2+2, orbstrt(iat1)+i-1,orbstrt(iat2)+il2-1 
                     SQHDOL(atmidx2+2,orbstrt(iat1)+i-1,
      &                orbstrt(iat2)+if2-1:orbstrt(iat2)+il2-1)=
      &                H(idx3+2*nint+1:idx3+2*nint+nmss2)!z2
                   ENDIF
                 ENDDO
 
-!                DO i=1,3*nat
-!                  WRITE(LUOUT,*)"SQHDOL",i
-!                  CALL output(SQHDOL(i,:,:),1,nmot,1,nmot,nmot,nmot,1)
-!                ENDDO
+                DO i=1,3*nat
+                  WRITE(LUOUT,*)"SQHDOL",i
+                  CALL output(SQHDOL(i,:,:),1,nmot,1,nmot,nmot,nmot,1)
+                ENDDO
 
 
  60           continue
